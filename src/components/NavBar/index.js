@@ -7,11 +7,15 @@ export default function NavBar() {
 			className={` w-full ${
 				filterDisplay ? 'h-52 pt-5 mb-20' : 'h-20 items-center'
 			} bg-black  transition-all duration-1000`}>
-			<div className='flex pt-5 justify-around'>
-				<img src={ImdbLogo} alt='logo' className='hidden sm:h-10 sm:inline' />
-				<div className='flex h-10'>
+			<div className='flex pt-5 justify-around '>
+				<img
+					src={ImdbLogo}
+					alt='logo'
+					className='hidden sm:h-10 sm:inline transition-all hover:scale-110 ease-in-out duration-300 '
+				/>
+				<div className='flex h-10 '>
 					<span
-						className='rounded-l-lg bg-yellow-300 p-2'
+						className='rounded-l-lg bg-yellow-300 p-2 transition-all font-extrabold text-4xl hover:bg-black hover:text-yellow-300 hover:text-yellow-300 duration-1000  border-yellow-300 border-2'
 						onClick={() => {
 							setFilterDisplay(!filterDisplay);
 						}}>
@@ -51,7 +55,7 @@ export default function NavBar() {
 					</span>
 				</div>
 				<div>
-					<button className='px-4 py-2 text-white border-2 border-yellow-300 rounded-lg '>
+					<button className='px-4 py-2 text-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-300 hover:text-black transition-all hover:scale-110 ease-in-out duration-300 '>
 						<p className='hidden sm:inline'>watchlist</p>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -63,66 +67,70 @@ export default function NavBar() {
 					</button>
 				</div>
 			</div>
-			{filterDisplay && (
-				<div className='h-20 m-5 rounded-lg'>
-					<div class='bg-white p-6 rounded-xl shadow-lg'>
-						<div class='grid grid-cols-3 gap-6'>
-							<div class='flex flex-col'>
-								<label for='status' class='font-medium text-sm text-stone-600'>
-									Genre (s)
-								</label>
+			<div
+				className={` m-5 rounded-lg z-100  ${
+					filterDisplay ? 'opacity-100 ' : 'opacity-0 '
+				} transition-all  duration-800 `}>
+				<div
+					className={`bg-white p-6 rounded-xl shadow-lg ${
+						!filterDisplay && 'hidden'
+					}`}>
+					<div class='grid grid-cols-3 gap-6'>
+						<div class='flex flex-col'>
+							<label for='status' class='font-medium text-sm text-stone-600'>
+								Genre (s)
+							</label>
 
-								<select
-									id='status'
-									class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-									<option>Active</option>
-									<option>Pending</option>
-									<option>Deleted</option>
-								</select>
-							</div>
-							<div class='flex flex-col'>
-								<label for='status' class='font-medium text-sm text-stone-600'>
-									Rating
-								</label>
+							<select
+								id='status'
+								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								<option>Active</option>
+								<option>Pending</option>
+								<option>Deleted</option>
+							</select>
+						</div>
+						<div class='flex flex-col'>
+							<label for='status' class='font-medium text-sm text-stone-600'>
+								Rating
+							</label>
 
-								<select
-									id='status'
-									class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-									<option>5 Stars</option>
-									<option>4 Stars</option>
-									<option>3 Stars</option>
-									<option>2 Stars</option>
-									<option>1 Stars</option>
-								</select>
-							</div>
-
-							<div class='flex flex-col'>
-								<label for='status' class='font-medium text-sm text-stone-600'>
-									Language
-								</label>
-
-								<select
-									id='status'
-									class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-									<option>English</option>
-									<option>Arabic</option>
-									<option>Franch</option>
-								</select>
-							</div>
+							<select
+								id='status'
+								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								<option>5 Stars</option>
+								<option>4 Stars</option>
+								<option>3 Stars</option>
+								<option>2 Stars</option>
+								<option>1 Stars</option>
+							</select>
 						</div>
 
-						<div class='grid md:flex grid-cols-2 justify-end space-x-4 w-full mt-6'>
-							<button class='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'>
-								Reset
-							</button>
+						<div class='flex flex-col'>
+							<label for='status' class='font-medium text-sm text-stone-600'>
+								Language
+							</label>
 
-							<button class='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'>
-								Apply Filters
-							</button>
+							<select
+								id='status'
+								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								<option>English</option>
+								<option>Arabic</option>
+								<option>Franch</option>
+							</select>
 						</div>
 					</div>
+
+					<div class='grid md:flex grid-cols-2 justify-end space-x-4 w-full mt-6'>
+						<button class='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'>
+							Reset
+						</button>
+
+						<button class='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'>
+							Apply Filters
+						</button>
+					</div>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 }
