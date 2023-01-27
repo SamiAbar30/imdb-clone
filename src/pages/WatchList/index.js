@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '../../components/Card'
 import Pagination from '../../components/Pagination'
 
 export default function WatchList() {
+  const [watchlist, setWatchlist] = useState()
+  
+  
   return (
     <div><div className='p-5 z-10'>
     <h2 className='text-2xl font-extrabold tracking-tight text-gray-900 pl-5 border-b p-5'>

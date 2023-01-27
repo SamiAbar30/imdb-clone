@@ -38,7 +38,7 @@ export default function NavBar() {
 						className='p-2 w-40 md:w-96 sm:50'
 						placeholder='Search'
 					/>
-					<span className='rounded-r-full bg-yellow-300 p-2'>
+					<span className='rounded-r-full bg-yellow-300 p-2 transition-all font-extrabold text-4xl hover:bg-black hover:text-yellow-300 hover:text-yellow-300 duration-1000  border-yellow-300 border-2'>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							fill='none'
@@ -75,28 +75,28 @@ export default function NavBar() {
 					className={`bg-white p-6 rounded-xl shadow-lg ${
 						!filterDisplay && 'hidden'
 					}`}>
-					<div class='grid grid-cols-3 gap-6'>
-						<div class='flex flex-col'>
-							<label for='status' class='font-medium text-sm text-stone-600'>
+					<div className='grid grid-cols-3 gap-6'>
+						<div className='flex flex-col'>
+							<label for='status' className='font-medium text-sm text-stone-600'>
 								Genre (s)
 							</label>
 
 							<select
 								id='status'
-								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
 								<option>Active</option>
 								<option>Pending</option>
 								<option>Deleted</option>
 							</select>
 						</div>
-						<div class='flex flex-col'>
-							<label for='status' class='font-medium text-sm text-stone-600'>
+						<div className='flex flex-col'>
+							<label for='status' className='font-medium text-sm text-stone-600'>
 								Rating
 							</label>
 
 							<select
 								id='status'
-								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
 								<option>5 Stars</option>
 								<option>4 Stars</option>
 								<option>3 Stars</option>
@@ -105,14 +105,14 @@ export default function NavBar() {
 							</select>
 						</div>
 
-						<div class='flex flex-col'>
-							<label for='status' class='font-medium text-sm text-stone-600'>
+						<div className='flex flex-col'>
+							<label for='status' className='font-medium text-sm text-stone-600'>
 								Language
 							</label>
 
 							<select
 								id='status'
-								class='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
 								<option>English</option>
 								<option>Arabic</option>
 								<option>Franch</option>
@@ -120,12 +120,12 @@ export default function NavBar() {
 						</div>
 					</div>
 
-					<div class='grid md:flex grid-cols-2 justify-end space-x-4 w-full mt-6'>
-						<button class='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'>
+					<div className='grid md:flex grid-cols-2 justify-end space-x-4 w-full mt-6'>
+						<button className='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'>
 							Reset
 						</button>
 
-						<button class='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'>
+						<button className='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'>
 							Apply Filters
 						</button>
 					</div>

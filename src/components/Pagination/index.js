@@ -5,7 +5,7 @@ import {
 
 export default function Pagination() {
 	return (
-		<nav className='border-t border-gray-200 px-4 flex items-center justify-between sm:px-0'>
+		<nav className='border-t border-gray-200 px-5 flex items-center justify-between sm:px-0  pb-5'>
 			<div className='-mt-px w-0 flex-1 flex'>
 				<a
 					href='a'
@@ -20,6 +20,7 @@ export default function Pagination() {
 			<div className='hidden md:-mt-px md:flex'>
 				{[1, 2, 3, 4, 5].map((index) => (
 					<a
+					key={index}
 						href='#'
 						className={`${
 							index !== 5
