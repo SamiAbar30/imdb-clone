@@ -26,7 +26,7 @@ export default function Home() {
 	return (
 		<>
 			<CardsSection dataCards={moviesTopRated} max={4}/>
-			<CardsSection dataCards={moviesLatest} max={8}/>
+			<CardsSection dataCards={moviesLatest} max={10}/>
 			<Pagination />
 		</>
 	);

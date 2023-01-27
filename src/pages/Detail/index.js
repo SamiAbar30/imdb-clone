@@ -1,6 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import requests, { API_KEY } from '../../config';
+import { axiosConfig } from '../../config/axios';
 
 export default function Detail() {
+  const [movie, setMovie] = useState()
+  let { Id } = useParams();
+  useEffect(() => {
+    fetchMovieById()
+  }, [])
+  
+  const fetchMovieById = async () => {
+   
+		const moviesData = await axiosConfig.get(`/movie/${Id}?api_key=${API_KEY}&language=en-US`);
+		console.log(moviesData);
+    setMovie(moviesData.data);
+	};
 	return (
 		<>
 			<div className='text-gray-600 body-font overflow-hidden'>
@@ -56,12 +71,12 @@ export default function Detail() {
 						<img
 							alt='ecommerce'
 							className='lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded'
-							src='https://dummyimage.com/400x400'
+							src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
 						/>
 
 						<div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>
 							<h1 className='text-gray-900 text-3xl title-font font-medium mb-1'>
-								The Catcher in the Rye
+              {movie?.original_name || movie?.original_title}
 							</h1>
 							<div className='flex mb-4 mt-5'>
 								<span className='flex items-center'>
@@ -75,16 +90,11 @@ export default function Detail() {
 										viewBox='0 0 24 24'>
 										<path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'></path>
 									</svg>
-									<span className='text-gray-600 ml-3'>4.0</span>
+									<span className='text-gray-600 ml-3'>{movie?.vote_average}</span>
 								</span>
 							</div>
 							<p className='leading-relaxed'>
-								Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-								sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo
-								juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-								seitan poutine tumeric. Gastropub blue bottle austin listicle
-								pour-over, neutra jean shorts keytar banjo tattooed umami
-								cardigan.
+              {movie?.overview}
 							</p>
 							<div className='mt-5'>
 								<p className='text-lg font-semibold text-black'>CATEGORIES</p>

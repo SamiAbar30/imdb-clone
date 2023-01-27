@@ -1,7 +1,8 @@
-export const API_KEY="5676998ffe793d254c7d163727e5aa71";
+export  const API_KEY="5676998ffe793d254c7d163727e5aa71";
 const requests = {
   fetchAllTrending:`/trending/all/week?api_key=${API_KEY}&language=en-US`,
   fetchNetflixOriginals:`/discover/tv?api_key=${API_KEY}&with_networks=213`,
+  findMovie:`/find/?api_key=${API_KEY}`,
   fetchTopRated:`/movie/top_rated?api_key=${API_KEY}&language=en-US`,
   fetchActionMovies:`/discover/movie?api_key=${API_KEY}&with_genres=28`,
   fetchComedyMovies:`/discover/movie?api_key=${API_KEY}&with_genres=35`,
