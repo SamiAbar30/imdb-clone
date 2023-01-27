@@ -18,6 +18,10 @@ export const router = createBrowserRouter([
         element: <Detail/>,
       },
       {
+        path: "watch-list/detail/:Id",
+        element: <Detail/>,
+      },
+      {
         path: "/watch-list",
         element: <WatchList/>,
       },

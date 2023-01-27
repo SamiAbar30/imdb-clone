@@ -1,7 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import ImdbLogo from '../../assets/images/Imdb-logo.png';
+import requests, { API_KEY } from '../../config';
+import { axiosConfig } from '../../config/axios';
 export default function NavBar() {
+	const navigate = useNavigate();
 	const [filterDisplay, setFilterDisplay] = useState(false);
+	const [genres, setGenres] = useState([]);
+	useEffect(() => {
+		fetchMovieById();
+	}, []);
+
+	const fetchMovieById = async () => {
+		const genresData = await axiosConfig.get(requests.fetchGenres);
+		console.log(genresData);
+		setGenres(genresData.data.genres);
+	};
 	return (
 		<div
 			className={` w-full ${
@@ -10,6 +24,9 @@ export default function NavBar() {
 			<div className='flex pt-5 justify-around '>
 				<img
 					src={ImdbLogo}
+					onClick={() => {
+						navigate('/');
+					}}
 					alt='logo'
 					className='hidden sm:h-10 sm:inline transition-all hover:scale-110 ease-in-out duration-300 '
 				/>
@@ -54,8 +71,8 @@ export default function NavBar() {
 						</svg>
 					</span>
 				</div>
-				<div>
-					<button className='px-4 py-2 text-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-300 hover:text-black transition-all hover:scale-110 ease-in-out duration-300 '>
+				<div className='px-4 py-2 text-white border-2 border-yellow-300 rounded-lg hover:bg-yellow-300 hover:text-black transition-all hover:scale-110 ease-in-out duration-300'>
+					<Link to={`watch-list/`}>
 						<p className='hidden sm:inline'>watchlist</p>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
@@ -64,7 +81,7 @@ export default function NavBar() {
 							fill='currentColor'>
 							<path d='M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z' />
 						</svg>
-					</button>
+					</Link>
 				</div>
 			</div>
 			<div
@@ -77,36 +94,42 @@ export default function NavBar() {
 					}`}>
 					<div className='grid grid-cols-3 gap-6'>
 						<div className='flex flex-col'>
-							<label for='status' className='font-medium text-sm text-stone-600'>
+							<label
+								for='status'
+								className='font-medium text-sm text-stone-600'>
 								Genre (s)
 							</label>
 
 							<select
 								id='status'
 								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-								<option>Active</option>
-								<option>Pending</option>
-								<option>Deleted</option>
+								{genres?.map((genre) => (
+									<option key={genre.id}>{genre.name}</option>
+								))}
 							</select>
 						</div>
 						<div className='flex flex-col'>
-							<label for='status' className='font-medium text-sm text-stone-600'>
+							<label
+								for='status'
+								className='font-medium text-sm text-stone-600'>
 								Rating
 							</label>
 
 							<select
 								id='status'
 								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-								<option>5 Stars</option>
-								<option>4 Stars</option>
-								<option>3 Stars</option>
-								<option>2 Stars</option>
-								<option>1 Stars</option>
+								{[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((starts) => (
+									<option key={starts} value={starts}>
+										{starts} Stars{' '}
+									</option>
+								))}
 							</select>
 						</div>
 
 						<div className='flex flex-col'>
-							<label for='status' className='font-medium text-sm text-stone-600'>
+							<label
+								for='status'
+								className='font-medium text-sm text-stone-600'>
 								Language
 							</label>
 

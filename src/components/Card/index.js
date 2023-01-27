@@ -1,19 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function Card({ movie }) {
-
 	//add movie to the watch list
 	function addToWatchList() {
 		// get the data from localStorage and convert it to table
 		const arr = JSON.parse(localStorage.getItem('array')) || [];
-    //add new movie
+		//add new movie
 		arr.push(movie);
 		// convert array to JSON string
 		const jsonArr = JSON.stringify(arr);
 		// save to localStorage
 		localStorage.setItem('array', jsonArr);
 	}
+	const notify = () => {
+		toast.success('the movie was added', {
+			position: toast.POSITION.TOP_RIGHT,
+		});
+	};
+
 	return (
 		<div className='cursor-pointer rounded-xl  p-3 shadow-lg hover:shadow-xl'>
 			<div className='relative flex items-end overflow-hidden rounded-xl'>
@@ -45,6 +51,7 @@ export default function Card({ movie }) {
 					className='group flex rounded-xl border-2 border-yellow-300 text-yellow-300 p-2 hover:text-white hover:bg-yellow-400 mt-3 text-md font-semibold'
 					onClick={() => {
 						addToWatchList(movie);
+						notify();
 					}}>
 					<p>Add to watchlist</p>
 					<div className='mt-1 ml-1'>
@@ -58,8 +65,11 @@ export default function Card({ movie }) {
 					</div>
 				</button>
 				<div className='flex items-end justify-between'>
-					
-					<Link className='inline-block mt-6 text-yellow-400 hover:text-yellow-500 border-b' to={`detail/${movie.id}`}>Read More</Link>
+					<Link
+						className='inline-block mt-6 text-yellow-400 hover:text-yellow-500 border-b'
+						to={`detail/${movie.id}`}>
+						Read More
+					</Link>
 				</div>
 			</div>
 		</div>

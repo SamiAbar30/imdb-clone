@@ -23,7 +23,6 @@ export default function WatchList() {
         <Card  key={index} movie={movie}/>
       ))}
     </div>
-    <Pagination />
   </div></div>
   )
 }

@@ -1,31 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import requests, { API_KEY } from '../../config';
 import { axiosConfig } from '../../config/axios';
 
 export default function Detail() {
-  const [movie, setMovie] = useState()
-  let { Id } = useParams();
-  useEffect(() => {
-    fetchMovieById()
-  }, [])
-  
-  const fetchMovieById = async () => {
-   
-		const moviesData = await axiosConfig.get(`/movie/${Id}?api_key=${API_KEY}&language=en-US`);
+	const [movie, setMovie] = useState([]);
+	const [view, setView] = useState(true);
+	let { Id } = useParams();
+
+	useEffect(() => {
+		fetchMovieById();
+	}, []);
+
+	const fetchMovieById = async () => {
+		const moviesData = await axiosConfig.get(
+			`/movie/${Id}?api_key=${API_KEY}&language=en-US`,
+		);
 		console.log(moviesData);
-    setMovie(moviesData.data);
+		setMovie(moviesData.data);
+	};
+
+	//add movie to the watch list
+	function addToWatchList() {
+		// get the data from localStorage and convert it to table
+		const arr = JSON.parse(localStorage.getItem('array')) || [];
+		//add new movie
+		arr.push(movie);
+		// convert array to JSON string
+		const jsonArr = JSON.stringify(arr);
+		// save to localStorage
+		localStorage.setItem('array', jsonArr);
+	}
+	const notify = () => {
+		toast.success('the movie was added', {
+			position: toast.POSITION.TOP_RIGHT,
+		});
 	};
 	return (
 		<>
 			<div className='text-gray-600 body-font overflow-hidden'>
 				<div className='container px-5 py-24 mx-auto'>
-					<div className='flex px-16 mt-8 space-y-0 space-x-4  mb-2 ml-20'>
-						<a
-							href='#'
-							title=''
+					<div className='flex px-16 mt-8 space-y-0 space-x-4  mb-2  ml-5 lg:ml-20'>
+						<button
 							className='inline-flex items-center justify-center w-full px-4 py-2 text-base font-semibold text-white  transition-all duration-200 bg-black border border-transparent rounded-md sm:w-auto  ml-1'
-							role='button'>
+							onClick={() => setView(true)}>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
@@ -39,13 +58,11 @@ export default function Detail() {
 								/>
 							</svg>
 							Trailer
-						</a>
+						</button>
 
-						<a
-							href='#'
-							title=''
+						<button
 							className='inline-flex items-center justify-center w-full px-4 py-2 text-base font-semibold text-black transition-all duration-200 bg-transparent border border-black rounded-md sm:w-auto '
-							role='button'>
+							onClick={() => setView(false)}>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
 								fill='none'
@@ -65,18 +82,13 @@ export default function Detail() {
 								/>
 							</svg>
 							Photos
-						</a>
+						</button>
 					</div>
 					<div className='lg:w-4/5 mx-auto flex flex-wrap'>
-						<img
-							alt='ecommerce'
-							className='lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded'
-							src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
-						/>
-
+						{view ? <MoviesContainer /> : <ImageContainer />}
 						<div className='lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0'>
 							<h1 className='text-gray-900 text-3xl title-font font-medium mb-1'>
-              {movie?.original_name || movie?.original_title}
+								{movie?.original_name || movie?.original_title}
 							</h1>
 							<div className='flex mb-4 mt-5'>
 								<span className='flex items-center'>
@@ -90,43 +102,48 @@ export default function Detail() {
 										viewBox='0 0 24 24'>
 										<path d='M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'></path>
 									</svg>
-									<span className='text-gray-600 ml-3'>{movie?.vote_average}</span>
+									<span className='text-gray-600 ml-3'>
+										{movie?.vote_average}
+									</span>
 								</span>
 							</div>
-							<p className='leading-relaxed'>
-              {movie?.overview}
-							</p>
+							<p className='leading-relaxed'>{movie?.overview}</p>
 							<div className='mt-5'>
-								<p className='text-lg font-semibold text-black'>CATEGORIES</p>
+								<p className='text-lg font-semibold text-black'>GENRES</p>
 								<nav className='flex flex-wrap list-none -mb-1 mt-1'>
-									{[1, 2, 3, 4, 5].map(() => (
+									{movie?.genres?.map((genre, index) => (
 										<li className='lg:w-1/3 mb-1 w-1/2'>
-											<a className='text-gray-600 hover:text-gray-800'>
-												First Link
-											</a>
+											<p className='text-gray-600 hover:text-gray-800'>
+												{genre.name}
+											</p>
 										</li>
 									))}
 								</nav>
 							</div>
 							<div>
 								<div className='flex items-center mt-5'>
-									<p className='text-lg font-semibold text-black'>Starts</p>
+									<p className='text-lg font-semibold text-black'>
+										Production Companies
+									</p>
 								</div>
 
 								<div className='flex items-center mt-5 space-x-4'>
-                {[1, 2, 3].map(() => (
-                  <div className='flex items-center justify-center w-20 h-20 rounded-full ring-2 ring-transparent hover:ring-yellow-600'>
-										<img
-											className='object-cover w-16 h-16 rounded-full'
-											src='https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/9/avatar-1.jpg'
-											alt=''
-										/>
-									</div>
-                  ))}
+									{movie?.production_companies?.map((company) => (
+										<div className='lg:w-1/3 mb-1 w-1/2'>
+											<p className='text-gray-600 hover:text-gray-800'>
+												{company.name}
+											</p>
+										</div>
+									))}
 								</div>
 							</div>
 							<div className='flex mt-5'>
-								<button className='flex  text-white bg-yellow-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded'>
+								<button
+									className='flex  text-white bg-yellow-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded'
+									onClick={() => {
+										addToWatchList(movie);
+										notify();
+									}}>
 									Add to Watchlist
 								</button>
 							</div>
@@ -209,6 +226,57 @@ export default function Detail() {
 					</div>
 				</div>
 			</div>
+		</>
+	);
+}
+function MoviesContainer() {
+	const [videos, setVideos] = useState([]);
+	let { Id } = useParams();
+	useEffect(() => {
+		fetchVideosMovieById();
+	}, []);
+	const fetchVideosMovieById = async () => {
+		const videosData = await axiosConfig.get(
+			`/movie/${Id}/videos?api_key=${API_KEY}&language=en-US`,
+		);
+		setVideos(videosData.data.results);
+	};
+	return (
+		<>
+			<iframe
+				className='lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded'
+				width='560'
+				height='315'
+				src={`https://www.youtube.com/embed/${
+					videos[Math.floor(Math.random() * videos?.length)]?.key
+				}`}
+				title='YouTube video player'
+				frameborder='0'
+				allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+				allowfullscreen></iframe>
+		</>
+	);
+}
+function ImageContainer() {
+	const [images, setImages] = useState([]);
+	let { Id } = useParams();
+	useEffect(() => {
+		fetchImagesMovieById();
+	}, []);
+	const fetchImagesMovieById = async () => {
+		const imagesData = await axiosConfig.get(
+			`/movie/${Id}/images?api_key=${API_KEY}`,
+		);
+		console.log(imagesData.data);
+		setImages(imagesData.data.posters);
+	};
+	return (
+		<>
+			<img
+				alt='ecommerce'
+				className='lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded '
+				src={`https://image.tmdb.org/t/p/original/${images[Math.floor(Math.random() * images?.length)]?.file_path}`}
+			/>
 		</>
 	);
 }
