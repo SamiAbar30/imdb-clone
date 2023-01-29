@@ -51,17 +51,17 @@ export default function Home() {
 				<div className='p-5 z-10'>
 					<div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'>
 						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((index) => (
-							<div class='border border-gray-300 shadow rounded-md p-4 max-w-sm w-full mx-auto'>
-								<div class='animate-pulse grid space-x-4'>
-									<div class='rounded-xl bg-slate-700 h-44 w-70 ml-1'></div>
-									<div class='flex-1 space-y-6 py-2'>
-										<div class='h-2 bg-slate-700 rounded'></div>
-										<div class='space-y-3'>
-											<div class='grid grid-cols-3 gap-4'>
-												<div class='h-2 bg-slate-700 rounded col-span-2'></div>
-												<div class='h-2 bg-slate-700 rounded col-span-1'></div>
+							<div key={index} className='border border-gray-300 shadow rounded-md p-4 max-w-sm w-full mx-auto'>
+								<div className='animate-pulse grid space-x-4'>
+									<div className='rounded-xl bg-slate-700 h-44 w-70 ml-1'></div>
+									<div className='flex-1 space-y-6 py-2'>
+										<div className='h-2 bg-slate-700 rounded'></div>
+										<div className='space-y-3'>
+											<div className='grid grid-cols-3 gap-4'>
+												<div className='h-2 bg-slate-700 rounded col-span-2'></div>
+												<div className='h-2 bg-slate-700 rounded col-span-1'></div>
 											</div>
-											<div class='h-2 bg-slate-700 rounded'></div>
+											<div className='h-2 bg-slate-700 rounded'></div>
 										</div>
 									</div>
 								</div>
