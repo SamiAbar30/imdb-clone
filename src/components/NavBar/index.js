@@ -118,7 +118,7 @@ export default function NavBar() {
 						<p className='hidden sm:inline'>watchlist</p>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
-							className='h-4 w-4 text-yellow-300 group-hover:text-white sm:hidden'
+							className='h-4 w-4 text-yellow-300 group-hover:text-white hover:text-black sm:hidden'
 							viewBox='0 0 20 20'
 							fill='currentColor'>
 							<path d='M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z' />
