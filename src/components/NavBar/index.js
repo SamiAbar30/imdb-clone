@@ -1,20 +1,55 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import ImdbLogo from '../../assets/images/Imdb-logo.png';
 import requests, { API_KEY } from '../../config';
 import { axiosConfig } from '../../config/axios';
+import { filterMovie, searchMovie } from '../../features/filter/filterSlice';
 export default function NavBar() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const [filterDisplay, setFilterDisplay] = useState(false);
+	const [genre, setGenre] = useState('');
+	const [rating, setRating] = useState('');
+	const [language, setLanguage] = useState('');
 	const [genres, setGenres] = useState([]);
+	const [searchInput, setSearchInput] = useState('');
+	const message = useSelector((state) => state.filter.message);
 	useEffect(() => {
-		fetchMovieById();
+		fetchGenres();
 	}, []);
-
-	const fetchMovieById = async () => {
+	useEffect(() => {
+		notify()
+	}, [message]);
+	useEffect(() => {
+		searchInput==""&&dispatch(searchMovie(searchInput));
+	}, [searchInput]);
+	const fetchGenres = async () => {
 		const genresData = await axiosConfig.get(requests.fetchGenres);
-		console.log(genresData);
-		setGenres(genresData.data.genres);
+		setGenres(genresData.data.genres)
+	};
+	//reset filter
+	function resetFilter() {
+		setGenre('');
+		setRating('');
+		setLanguage('');
+		dispatch(filterMovie({ language, rating, genre }));
+	}
+	//movie filter by language and rating and genre
+	function moviesFilter() {
+		dispatch(filterMovie({ language, rating, genre }));
+	}
+	//search movie
+	function moviesSearch() {
+		dispatch(searchMovie(searchInput));
+	}
+	//
+	const notify = () => {
+		toast.info(message, {
+			position: toast.POSITION.TOP_RIGHT,
+		});
 	};
 	return (
 		<div
@@ -54,8 +89,15 @@ export default function NavBar() {
 						type='text'
 						className='p-2 w-40 md:w-96 sm:50'
 						placeholder='Search'
+						onChange={(e) => {
+							setSearchInput(e.target.value);
+						}}
 					/>
-					<span className='rounded-r-full bg-yellow-300 p-2 transition-all font-extrabold text-4xl hover:bg-black hover:text-yellow-300 hover:text-yellow-300 duration-1000  border-yellow-300 border-2'>
+					<span
+						className='rounded-r-full bg-yellow-300 p-2 transition-all font-extrabold text-4xl hover:bg-black hover:text-yellow-300 hover:text-yellow-300 duration-1000  border-yellow-300 border-2'
+						onClick={() => {
+							moviesSearch();
+						}}>
 						<svg
 							xmlns='http://www.w3.org/2000/svg'
 							fill='none'
@@ -95,29 +137,39 @@ export default function NavBar() {
 					<div className='grid grid-cols-3 gap-6'>
 						<div className='flex flex-col'>
 							<label
-								for='status'
+								htmlFor='status'
 								className='font-medium text-sm text-stone-600'>
 								Genre (s)
 							</label>
 
 							<select
 								id='status'
-								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'
+								onChange={(e) => {
+									setGenre(e.target.value);
+								}}>
+								<option value=''>select Genre</option>
 								{genres?.map((genre) => (
-									<option key={genre.id}>{genre.name}</option>
+									<option key={genre.id} value={genre.id}>
+										{genre.name}
+									</option>
 								))}
 							</select>
 						</div>
 						<div className='flex flex-col'>
 							<label
-								for='status'
+								htmlFor='status'
 								className='font-medium text-sm text-stone-600'>
 								Rating
 							</label>
 
 							<select
 								id='status'
-								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'
+								onChange={(e) => {
+									setRating(e.target.value);
+								}}>
+								<option value=''>select starts</option>
 								{[1, 2, 3, 4, 5, 6, 7, 8, 9]?.map((starts) => (
 									<option key={starts} value={starts}>
 										{starts} Stars{' '}
@@ -128,27 +180,48 @@ export default function NavBar() {
 
 						<div className='flex flex-col'>
 							<label
-								for='status'
+								htmlFor='status'
 								className='font-medium text-sm text-stone-600'>
 								Language
 							</label>
 
 							<select
 								id='status'
-								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'>
-								<option>English</option>
-								<option>Arabic</option>
-								<option>Franch</option>
+								className='mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50'
+								onChange={(e) => {
+									setLanguage(e.target.value);
+								}}>
+								<option value=''>select Language</option>
+								<option value='en'>English</option>
+								<option value='ar'>Arabic</option>
+								<option value='fr'>French</option>
+								<option value='es'>Spanish</option>
+								<option value='ko'>Korean</option>
+								<option value='el'>Greek</option>
+								<option value='ja'>Japanese</option>
+								<option value='tr'>Turkish</option>
+								<option value='it'>Italian</option>
+								<option value='nl'>Dutch</option>
+								<option value='pt'>Portuguese</option>
+								<option value='de'>German</option>
 							</select>
 						</div>
 					</div>
 
 					<div className='grid md:flex grid-cols-2 justify-end space-x-4 w-full mt-6'>
-						<button className='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'>
+						<button
+							className='px-4 py-2 rounded-lg text-stone-50 bg-stone-400 hover:bg-stone-500 font-bold text-white shadow-lg shadow-stone-200 transition ease-in-out duration-200 translate-10'
+							onClick={() => {
+								resetFilter();
+							}}>
 							Reset
 						</button>
 
-						<button className='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'>
+						<button
+							className='px-4 py-2 rounded-lg text-white bg-yellow-300 hover:bg-yellow-400 font-bold text-white shadow-lg shadow-yellow-200 transition ease-in-out duration-200 translate-10'
+							onClick={() => {
+								moviesFilter();
+							}}>
 							Apply Filters
 						</button>
 					</div>

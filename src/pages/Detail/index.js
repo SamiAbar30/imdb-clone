@@ -6,21 +6,35 @@ import { axiosConfig } from '../../config/axios';
 
 export default function Detail() {
 	const [movie, setMovie] = useState([]);
+	const [casts, setCasts] = useState([]);
+	const [reviews, setReviews] = useState([]);
 	const [view, setView] = useState(true);
 	let { Id } = useParams();
 
 	useEffect(() => {
 		fetchMovieById();
+		fetchCastsMovieById();
+		fetchReviewMovieById();
 	}, []);
-
+	//get detail movie by id
 	const fetchMovieById = async () => {
-		const moviesData = await axiosConfig.get(
-			`/movie/${Id}?api_key=${API_KEY}&language=en-US`,
-		);
-		console.log(moviesData);
+		const moviesData = await axiosConfig.get(`/movie/${Id}?api_key=${API_KEY}`);
 		setMovie(moviesData.data);
 	};
-
+	//fetch Casts Movie
+	const fetchCastsMovieById = async () => {
+		const castsData = await axiosConfig.get(
+			`/movie/${Id}/credits?api_key=${API_KEY}`,
+		);
+		setCasts(castsData.data.cast.slice(0, 8));
+	};
+	//fetch Review Movie
+	const fetchReviewMovieById = async () => {
+		const reviewsData = await axiosConfig.get(
+			`/movie/${Id}/reviews?api_key=${API_KEY}`,
+		);
+		setReviews(reviewsData.data.results);
+	};
 	//add movie to the watch list
 	function addToWatchList() {
 		// get the data from localStorage and convert it to table
@@ -32,6 +46,7 @@ export default function Detail() {
 		// save to localStorage
 		localStorage.setItem('array', jsonArr);
 	}
+	//message popup
 	const notify = () => {
 		toast.success('the movie was added', {
 			position: toast.POSITION.TOP_RIGHT,
@@ -162,16 +177,18 @@ export default function Detail() {
 					</p>
 				</div>
 				<div className='grid gap-10 mx-auto lg:max-w-screen-lg sm:grid-cols-2 lg:grid-cols-4'>
-					{[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
+					{casts.map((cast) => (
 						<div className='flex flex-col items-center'>
 							<img
 								className='object-cover w-20 h-20 mb-2 rounded-full shadow'
-								src='https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=3&amp;h=750&amp;w=1260'
+								src={`https://image.tmdb.org/t/p/original/${cast?.profile_path}`}
 								alt='Person'
 							/>
 							<div className='flex flex-col items-center'>
-								<p className='text-lg font-bold'>Oliver Aguilerra</p>
-								<p className='text-sm text-gray-800'>Product Manager</p>
+								<p className='text-lg font-bold'>{cast?.name}</p>
+								<p className='text-sm text-gray-800'>
+									{cast?.known_for_department}
+								</p>
 							</div>
 						</div>
 					))}
@@ -189,15 +206,13 @@ export default function Detail() {
 				</div>
 				<div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
 					<div className='grid grid-cols-1 gap-6 lg:gap-10 sm:grid-cols-2 md:grid-cols-3'>
-						{[1, 2, 3, 4, 5, 6].map(() => (
+						{reviews?.map((review) => (
 							<div className='flex flex-col bg-white border border-gray-200 rounded-md'>
 								<div className='flex flex-col justify-between flex-1 p-8'>
 									<div className='flex-1'>
 										<blockquote>
-											<p className='text-lg text-gray-800'>
-												“You made it so simple. My new site is so much faster
-												and easier to work with than my old site. I just choose
-												the page, make the change and click save.”
+											<p className='text-lg text-gray-800 truncate'>
+												“{review?.content}”
 											</p>
 										</blockquote>
 									</div>
@@ -207,15 +222,14 @@ export default function Detail() {
 										<div className='flex items-center'>
 											<img
 												className='flex-shrink-0 object-cover w-10 h-10 rounded-full'
-												src='https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/8/avatar-1.jpg'
+												src={review?.author_details?.avatar_path?.substr(1)}
 												alt=''
 											/>
 											<div className='ml-3'>
 												<p className='text-base font-semibold text-gray-800 truncate'>
-													Devon Lane
-												</p>
-												<p className='text-base text-gray-500 truncate'>
-													President of Sales
+													{review?.author ||
+														review?.author_details.name ||
+														review?.author_details.username}
 												</p>
 											</div>
 										</div>
@@ -267,7 +281,6 @@ function ImageContainer() {
 		const imagesData = await axiosConfig.get(
 			`/movie/${Id}/images?api_key=${API_KEY}`,
 		);
-		console.log(imagesData.data);
 		setImages(imagesData.data.posters);
 	};
 	return (
@@ -275,7 +288,9 @@ function ImageContainer() {
 			<img
 				alt='ecommerce'
 				className='lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded '
-				src={`https://image.tmdb.org/t/p/original/${images[Math.floor(Math.random() * images?.length)]?.file_path}`}
+				src={`https://image.tmdb.org/t/p/original/${
+					images[Math.floor(Math.random() * images?.length)]?.file_path
+				}`}
 			/>
 		</>
 	);

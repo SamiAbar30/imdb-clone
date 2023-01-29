@@ -3,7 +3,7 @@ import App from "../App";
 import Detail from "../pages/Detail";
 import Home from "../pages/Home";
 import WatchList from "../pages/WatchList";
-
+// routing setup
 export const router = createBrowserRouter([
   {
     path: "/",

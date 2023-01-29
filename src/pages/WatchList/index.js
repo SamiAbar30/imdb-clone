@@ -18,7 +18,7 @@ export default function WatchList() {
     <h2 className='text-2xl font-extrabold tracking-tight text-gray-900 pl-5 border-b p-5'>
       Latest Movies
     </h2>
-    <div class='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'>
+    <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6'>
       {watchlist?.map((movie,index) => (
         <Card  key={index} movie={movie}/>
       ))}
